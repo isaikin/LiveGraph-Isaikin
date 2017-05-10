@@ -1,7 +1,8 @@
 ﻿var width = 960,
     height = 500,
-    color = "#360cea",
-    colorSmoke = "#fff"
+    colors = "#360cea",
+    colorSmoke = "#fff",
+    lastText = 2;
 
 var svg = d3.select('#graph')
     .append('svg')
@@ -14,9 +15,9 @@ var svg = d3.select('#graph')
 //  - reflexive edges are indicated on the node (as a bold black circle).
 //  - links are always source < target; edge directions are set by 'left' and 'right'.
 var nodes = [
-    { id: 0, reflexive: false, color : "#a1fa01"},
-    { id: 1, reflexive: true, color :"#a1fa01"},
-    { id: 2, reflexive: false, color :"#a1fa01" }
+    { id: 0, reflexive: false, color: "#a1fa01", text: 0 },
+    { id: 1, reflexive: true, color: "#a1fa01", text: 1 },
+    { id: 2, reflexive: false, color: "#a1fa01", text: 2 }
 ],
     lastNodeId = 2,
     links = [
@@ -100,12 +101,50 @@ function tick() {
         return 'translate(' + d.x + ',' + d.y + ')';
     });
 }
+function getListGrapg() {
+    var graph = [];
+    for (let i = 0; i < nodes.length; i++) {
+        graph[nodes[i].id] = [];
+    }
 
+    for (let i = 0; i < links.length; i++) {
+        let first = links[i].source.id;
+        let second = links[i].target.id;
+
+        if (links[i].left) {
+            graph[second].push(first);
+        }
+
+        if (links[i].right) {
+            graph[first].push(second);
+
+        }
+
+    }
+
+    for (let i = 0; i < graph.length; i++) {
+        if (!isNaN(graph[i])) {
+            graph[i].sort();
+        }
+    }
+
+    return graph;
+}
+let tableAtt = $('#addCircleTable');
+function AddCicrleTable() {
+    var graph = getListGrapg();
+    var element = "";
+    for (var i = 0; i < graph.length; i++) {
+        element += '<tr><th scope="row">' + i + '</th> <td>' + graph[i].toString() + '</td ></tr>';
+    }
+    tableAtt.empty();
+    tableAtt.append(element);
+}
 // update graph (called when needed)
 function restart() {
     // path (link) group
     path = path.data(links);
-
+    AddCicrleTable();
     // update existing links
     path.classed('selected', function (d) { return d === selected_link; })
         .style('marker-start', function (d) { return d.left ? 'url(#start-arrow)' : ''; })
@@ -131,16 +170,14 @@ function restart() {
 
     // remove old links
     path.exit().remove();
-
-
     // circle (node) group
     // NB: the function arg is crucial here! nodes are known by id, not by index!
-    circle = circle.data(nodes, function (d) { return d.id; });
+    circle = circle.data(nodes, function (d) { return d.id; })
 
     // update existing nodes (reflexive & selected visual states)
     circle.selectAll('circle')
-        .style('fill', function (d) { return (d === selected_node) ? color : d.color; })
-        .classed('reflexive', function (d) { return d.reflexive; });
+        .style('fill', function (d) { return (d === selected_node) ? colors : d.color; })
+        .classed('reflexive', function (d) { return d.reflexive; })
 
     // add new nodes
     var g = circle.enter().append('svg:g');
@@ -148,7 +185,7 @@ function restart() {
     g.append('svg:circle')
         .attr('class', 'node')
         .attr('r', 12)
-        .style('fill', function (d) { return (d === selected_node) ? color : d.color; })
+        .style('fill', function (d) { return (d === selected_node) ? colors : d.color; })
         .style('stroke', function (d) { return d3.rgb(colorSmoke).darker().toString(); })
         .classed('reflexive', function (d) { return d.reflexive; })
         .on('mouseover', function (d) {
@@ -225,16 +262,14 @@ function restart() {
             restart();
         });
 
-    // show node IDs
     g.append('svg:text')
         .attr('x', 0)
         .attr('y', 4)
         .attr('class', 'id')
-        .text(function (d) { return d.id; });
+        .text(function (d) { ; return d.text; });
 
     // remove old nodes
     circle.exit().remove();
-
     // set the graph in motion
     force.start();
 }
@@ -254,6 +289,7 @@ function mousedown() {
     node.x = point[0];
     node.y = point[1];
     node.color = "#a1fa01";
+    node.text = ++lastText;
     nodes.push(node);
 
     restart();
@@ -296,6 +332,7 @@ function spliceLinksForNode(node) {
 var lastKeyDown = -1;
 
 function keydown() {
+
     d3.event.preventDefault();
 
     if (lastKeyDown !== -1) return;
@@ -314,6 +351,7 @@ function keydown() {
             if (selected_node) {
                 nodes.splice(nodes.indexOf(selected_node), 1);
                 spliceLinksForNode(selected_node);
+
             } else if (selected_link) {
                 links.splice(links.indexOf(selected_link), 1);
             }
@@ -378,10 +416,15 @@ function stopViz() {
 }
 
 function Fill(j, array) {
-    if (j >= nodes.length) {
+    if (j >= array.length) {
         stopViz();
     }
-    nodes[array[j]].color = "#fa0307";
+    for (let i = 0; i < nodes.length; i++) {
+        if (nodes[i].id == array[j]) {
+            nodes[i].color = "#fa0307";
+            break;
+        }
+    }
     restart();
 }
 
@@ -391,11 +434,12 @@ function bfs(graph) {
         result = [];
     q.push(0);
     result.push(selected_node.id);
+    selected_node = null;
     for (let i = 0; i < graph.length; i++) {
         isVisit[i] = false;
     }
 
-    while (q.length > 0){
+    while (q.length > 0) {
         var v = q.shift();
         if (!isVisit[v]) {
             for (let i = 0; i < graph[v].length; i++) {
@@ -409,28 +453,52 @@ function bfs(graph) {
     return result;
 }
 
+function dfsVertex(v, result, isVisit, graph) {
+    isVisit[v] = true;
+    result.push(v);
+    for (let i = 0; i < graph[v].length; i++) {
+        let u = graph[v][i];
+        if (!isVisit[u]) {
+            dfsVertex(u, result, isVisit, graph)
+        }
+    }
+}
+function dfs(graph) {
+    let isVisit = [],
+        result = [],
+        v = selected_node.id;
+    selected_node = null;
+    for (let i = 0; i < graph.length; i++) {
+        isVisit[i] = false;
+    }
+    dfsVertex(v, result, isVisit, graph);
+    return result;
+}
+
+
 
 function start() {
-    var graph = [];
+
+    let j = 0,
+        graph = getListGrapg(),
+        g = [];
+    switch ($("#selectedAlg").val()) {
+        case '1': g = bfs(graph); break;
+        case '2': g = dfs(graph); break;
+        default:
+    }
+    id = setInterval(() => { Fill(j, g); j++ }, 2000)
+}
+function resetColorCircle() {
     for (var i = 0; i < nodes.length; i++) {
-        graph[nodes[i].id] = [];
+        nodes[i].color = 'a1fa01';
     }
-
-    for (var i = 0; i < links.length; i++) {
-        let first = links[i].source.id;
-        let second = links[i].target.id;
-
-        if (links[i].left) {
-            graph[second].push(first);
-        }
-
-        if (links[i].right) {
-            graph[first].push(second);
-
-        }
-
-    }
-    let j = 0;
-    var g = bfs(graph);
-    id = setInterval(() => { Fill(j,g); j++ }, 2000)
+    restart();
+}
+function deleteCircle() {
+    nodes.splice(0, nodes.length);
+    links.splice(0, links.length);
+    lastNodeId = -1;
+    lastText = -1;
+    restart();
 }
