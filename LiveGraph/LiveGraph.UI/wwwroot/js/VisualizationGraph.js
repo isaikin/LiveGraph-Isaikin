@@ -123,7 +123,7 @@ function getListGrapg() {
     }
 
     for (let i = 0; i < graph.length; i++) {
-        if (!isNaN(graph[i])) {
+        if (typeof graph[i] != "undefined") {
             graph[i].sort();
         }
     }
@@ -441,11 +441,12 @@ function bfs(graph) {
 
     while (q.length > 0) {
         var v = q.shift();
-        if (!isVisit[v]) {
-            for (let i = 0; i < graph[v].length; i++) {
+
+        for (let i = 0; i < graph[v].length; i++) {
+            if (!isVisit[graph[v][i]]) {
                 q.push(graph[v][i]);
                 result.push(graph[v][i]);
-                isVisit[v] = true;
+                isVisit[graph[v][i]] = true;
             }
         }
 
