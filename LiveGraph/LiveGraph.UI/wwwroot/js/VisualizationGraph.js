@@ -411,9 +411,14 @@ d3.select(window)
 restart();
 
 let id;
+let answer = $('#answer');
 function stopViz() {
     window.clearInterval(id);
 }
+
+function printAnswer(array, j) {
+    answer.text(array.slice(0, j + 1).toString());
+}   
 
 function Fill(j, array) {
     if (j >= array.length) {
@@ -422,11 +427,13 @@ function Fill(j, array) {
     for (let i = 0; i < nodes.length; i++) {
         if (nodes[i].id == array[j]) {
             nodes[i].color = "#fa0307";
+            printAnswer(array,j);
             break;
         }
     }
     restart();
 }
+
 
 function bfs(graph) {
     let q = [],
@@ -494,6 +501,7 @@ function resetColorCircle() {
     for (var i = 0; i < nodes.length; i++) {
         nodes[i].color = 'a1fa01';
     }
+    answer.text('');
     restart();
 }
 function deleteCircle() {
