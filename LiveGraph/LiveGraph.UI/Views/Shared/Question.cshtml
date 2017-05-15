@@ -1,4 +1,4 @@
-
+п»ї
 <button type="button" class="btn  btn-info" data-toggle="modal" data-target="#helpModal">aas</button>
 
 <div id="helpModal" class="modal fade" role="dialog">
@@ -9,17 +9,26 @@
                 <h4 class="modal-title">Modal Header</h4>
             </div>
             <div class="modal-body">
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox"><input type="text"/>
-                    </label>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Добавить ответ</button>
-                </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Добавить</button>
-            </div>
-        </div>
+                <div class="form-group">
 
+                    <label class="control-label"> Р’РѕРїСЂРѕСЃ </label>
+                    <textarea class="form-control" id="question"></textarea>
+                </div>
+                <div id="answers" class="container">
+                    <div class="checkbox">
+                        <lable class="answers">
+                            <input type="checkbox" class="check"><input class="answer" type="text" />
+                        </lable>
+                    </div>
+                </div>
+                <button id="addAnswer" type="button" class="btn btn-default" data-dismiss="modal">Р”РѕР±Р°РІРёС‚СЊ РѕС‚РІРµС‚</button>
+                <div class="modal-footer">
+                    <button id ="addQuestionChoice" type="button" class="btn btn-default" data-dismiss="modal" >Р”РѕР±Р°РІРёС‚СЊ РІРѕРїСЂРѕСЃ</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Р—Р°РєСЂС‹С‚СЊ</button>
+                </div>
+            </div>
+
+        </div>
     </div>
 </div>
+

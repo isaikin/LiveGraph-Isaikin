@@ -1,16 +1,60 @@
-@model LiveGraph.Common.AppTest
+﻿@model LiveGraph.Common.AppTest
 @{
-    ViewData["Title"] = "�������� �����";
+    ViewData["Title"] = "Ñîçäàíèå Òåñòà";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div class="container">
+    <div class="form-group" id="questions">
+    </div>
+    <button id="addTest" type="button" class="btn btn-default" data-dismiss="modal">Добавить ответ</button>
 
-<h2>Index</h2>
-@RenderSection("Question")
-
+    @await Html.PartialAsync("Question")
+</div>
 @section Scripts {
-    var AppTest = {
-    QuestionsChoice = [],
-    QuestionsGraph = [],
-    QuestionsNoAnswer = []
-    }
+    <script>
+        var appTest = {
+            questionsChoice :[],
+            questionsGraph :[],
+            questionsNoAnswer : []
+        }
+        function addAnswer(e) {
+            $('<div class="checkbox"> <lable class="answers" > <input type="checkbox" class="check"><input class="answer" type="text" /> </lable></div >').appendTo($("#answers"));
+            e.preventDefault();
+            return false;
+        }
+        function addQuestionChoice(e) {
+            var answers = $('.answers');
+            var answerList = [];
+            for (var i = 0; i < answers.length; i++) {
+                let answer = $(answers[i]).find('.answer').val(),
+                    check = $(answers[i]).find('.check').is(":checked");
+                answerList.push({ answer: answer, CorrectAnswer: check })
+            }
+            let questiontemp = $('#question').val();
+
+            var element = '<div class="form-control"> <h2>' + questiontemp +'</h2>'
+
+            for (var i = 0; i < answerList.length; i++) {
+                element += '<div class="checkbox"><lable><input type="checkbox"/>' + answerList[i].answer+'</lable></div>';
+            }
+            element += '</div>';
+            $(element).appendTo($('#questions'));
+            appTest.questionsChoice.push({ question: questiontemp, answers: answerList });
+            e.preventDefault();
+            return true;
+        }
+        function AddTest() {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Create", "AppTests")',
+                data: appTest,
+
+            });
+            return true;
+        }
+        $('#addAnswer').click(addAnswer);
+        $('#addQuestionChoice').click(addQuestionChoice);
+        $('#addTest').click(AddTest);
+
+    </script>
 }
