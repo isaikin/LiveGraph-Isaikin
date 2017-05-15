@@ -1,0 +1,16 @@
+@model LiveGraph.Common.AppTest
+@{
+    ViewData["Title"] = "Создание Теста";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+@RenderSection("Question")
+
+@section Scripts {
+    var AppTest = {
+    QuestionsChoice = [],
+    QuestionsGraph = [],
+    QuestionsNoAnswer = []
+    }
+}

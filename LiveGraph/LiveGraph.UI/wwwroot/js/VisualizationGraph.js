@@ -101,6 +101,7 @@ function tick() {
         return 'translate(' + d.x + ',' + d.y + ')';
     });
 }
+
 function getListGrapg() {
     var graph = [];
     for (let i = 0; i < nodes.length; i++) {
@@ -449,7 +450,6 @@ function bfs(graph) {
                 isVisit[graph[v][i]] = true;
             }
         }
-
     }
     return result;
 }
@@ -464,6 +464,7 @@ function dfsVertex(v, result, isVisit, graph) {
         }
     }
 }
+
 function dfs(graph) {
     let isVisit = [],
         result = [],
@@ -476,11 +477,8 @@ function dfs(graph) {
     return result;
 }
 
-
-
 function start() {
-
-    let j = 0,
+        let j = 0,
         graph = getListGrapg(),
         g = [];
     switch ($("#selectedAlg").val()) {
@@ -490,12 +488,14 @@ function start() {
     }
     id = setInterval(() => { Fill(j, g); j++ }, 2000)
 }
+
 function resetColorCircle() {
     for (var i = 0; i < nodes.length; i++) {
         nodes[i].color = 'a1fa01';
     }
     restart();
 }
+
 function deleteCircle() {
     nodes.splice(0, nodes.length);
     links.splice(0, links.length);
