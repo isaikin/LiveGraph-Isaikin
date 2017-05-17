@@ -23,7 +23,10 @@ namespace LiveGraph.UI.Controllers
 
 		public IActionResult Create(AppTest test)
 		{
-			return View();
+			return Json(
+				new {
+					Redirect =  Url.Action("Index", "Home")
+				});
 		}
 	}
 }

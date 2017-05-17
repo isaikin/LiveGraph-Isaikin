@@ -15,6 +15,7 @@
   <ItemGroup>
     <Content Include="wwwroot\css\VisualizationGraph.css" />
     <Content Include="wwwroot\css\viz.css" />
+    <Content Include="wwwroot\js\addGraph.js" />
     <Content Include="wwwroot\js\VisualizationGraph.js" />
   </ItemGroup>
   <ItemGroup>
