@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiveGraph.InterfaceBLL", "LiveGraph.InterfaceBLL\LiveGraph.InterfaceBLL.csproj", "{BC8A036E-0DC3-4609-85A0-112D888A1217}"
 EndProject
@@ -17,15 +17,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{F4872571-ABAB-
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{AAE7F715-97CD-4ECB-9C68-CB6AB788CFFC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveGraph.Common", "LiveGraph.Common\LiveGraph.Common.csproj", "{7DB5AB2D-4C50-4BE8-9514-4FE3C2B6F563}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiveGraph.Common", "LiveGraph.Common\LiveGraph.Common.csproj", "{7DB5AB2D-4C50-4BE8-9514-4FE3C2B6F563}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveGraph.BLL", "LiveGraph.BLL\LiveGraph.BLL.csproj", "{23ABBD9C-C473-4A8D-996F-2D68BE2B301D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiveGraph.BLL", "LiveGraph.BLL\LiveGraph.BLL.csproj", "{23ABBD9C-C473-4A8D-996F-2D68BE2B301D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveGraph.UI", "LiveGraph.UI\LiveGraph.UI.csproj", "{7A5646CE-6025-46D4-9A82-E902EBCCC1C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiveGraph.UI", "LiveGraph.UI\LiveGraph.UI.csproj", "{7A5646CE-6025-46D4-9A82-E902EBCCC1C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveGraph.Validation", "LiveGraph.Validation\LiveGraph.Validation.csproj", "{B6E14C30-C5CF-441A-BA01-41F81EDD2132}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiveGraph.Validation", "LiveGraph.Validation\LiveGraph.Validation.csproj", "{B6E14C30-C5CF-441A-BA01-41F81EDD2132}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Validation", "Validation", "{92E9CE64-2503-4B49-8388-7A96380738E4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C3BACE2A-2E8B-493C-8EF9-203A94FB52CD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTestProject1", "UnitTestProject1\UnitTestProject1.csproj", "{EAB72868-0802-49F3-8D4B-3A9BF36F6860}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUnitTestProject1", "XUnitTestProject1\XUnitTestProject1.csproj", "{3FE40002-158A-4CBB-8D17-C9F65A7354CA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "IntegrationTests\IntegrationTests.csproj", "{F1158F7C-ACEC-4E3D-9517-655F4B96E6AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +69,18 @@ Global
 		{B6E14C30-C5CF-441A-BA01-41F81EDD2132}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6E14C30-C5CF-441A-BA01-41F81EDD2132}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6E14C30-C5CF-441A-BA01-41F81EDD2132}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAB72868-0802-49F3-8D4B-3A9BF36F6860}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAB72868-0802-49F3-8D4B-3A9BF36F6860}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAB72868-0802-49F3-8D4B-3A9BF36F6860}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAB72868-0802-49F3-8D4B-3A9BF36F6860}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FE40002-158A-4CBB-8D17-C9F65A7354CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FE40002-158A-4CBB-8D17-C9F65A7354CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FE40002-158A-4CBB-8D17-C9F65A7354CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FE40002-158A-4CBB-8D17-C9F65A7354CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1158F7C-ACEC-4E3D-9517-655F4B96E6AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1158F7C-ACEC-4E3D-9517-655F4B96E6AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1158F7C-ACEC-4E3D-9517-655F4B96E6AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1158F7C-ACEC-4E3D-9517-655F4B96E6AC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,5 +93,8 @@ Global
 		{23ABBD9C-C473-4A8D-996F-2D68BE2B301D} = {71154D1E-E36C-41D2-A5B1-C3964A90BFD4}
 		{7A5646CE-6025-46D4-9A82-E902EBCCC1C4} = {F4872571-ABAB-4EA7-8A16-A1A1EAE6F955}
 		{B6E14C30-C5CF-441A-BA01-41F81EDD2132} = {92E9CE64-2503-4B49-8388-7A96380738E4}
+		{EAB72868-0802-49F3-8D4B-3A9BF36F6860} = {C3BACE2A-2E8B-493C-8EF9-203A94FB52CD}
+		{3FE40002-158A-4CBB-8D17-C9F65A7354CA} = {C3BACE2A-2E8B-493C-8EF9-203A94FB52CD}
+		{F1158F7C-ACEC-4E3D-9517-655F4B96E6AC} = {C3BACE2A-2E8B-493C-8EF9-203A94FB52CD}
 	EndGlobalSection
 EndGlobal

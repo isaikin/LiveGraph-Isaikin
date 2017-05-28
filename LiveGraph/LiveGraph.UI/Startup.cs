@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using LiveGraph.UI.Models;
-using LiveGraph.UI.Services;
 using LiveGraph.BLL;
 using LiveGraph.Common;
 using Microsoft.AspNetCore.Http;
@@ -25,7 +17,6 @@ using System.Globalization;
 using AutoMapper;
 using Microsoft.Extensions.Options;
 using LiveGraph.UI.Extension;
-using Microsoft.AspNetCore.Authorization;
 
 namespace LiveGraph.UI
 {
@@ -99,7 +90,8 @@ namespace LiveGraph.UI
 			services.AddTransient<IAppUserValidation, AppUserValidation>();
 			services.AddTransient<IPageDao, PageDao>();
 			services.AddTransient<IPageBLL, PageBLL>();
-		
+			services.AddTransient<IAppTestDao, AppTestDao>();
+			services.AddTransient<IAppTestBLL, AppTestBLL>();
 		}
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
 		{
@@ -118,9 +110,6 @@ namespace LiveGraph.UI
 			{
 				app.UseExceptionHandler("/Home/Error");
 			}
-
-			app.UseStaticFiles();
-
 
 
 			//app.UseIdentity();

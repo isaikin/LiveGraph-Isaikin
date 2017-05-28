@@ -19,9 +19,17 @@ namespace LiveGraph.DAL
 		{
 			using (var connection = base.GetConnection())
 			{
-				var result = connection.Query<PageDto>("GetAllPages", null, commandType: CommandType.StoredProcedure);
+				try
+				{
+					var result = connection.Query<PageDto>("GetAllPages", null, commandType: CommandType.StoredProcedure);
+					return result;
 
-				return result;
+				}
+				catch
+				{
+					return new List<PageDto>();
+				}
+
 			}
 		}
 
