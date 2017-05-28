@@ -99,7 +99,8 @@ namespace LiveGraph.UI
 			services.AddTransient<IAppUserValidation, AppUserValidation>();
 			services.AddTransient<IPageDao, PageDao>();
 			services.AddTransient<IPageBLL, PageBLL>();
-		
+			services.AddTransient<IAppTestDao, AppTestDao>();
+			services.AddTransient<IAppTestBLL, AppTestBLL>();
 		}
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
 		{

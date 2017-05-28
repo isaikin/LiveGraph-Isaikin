@@ -7,6 +7,10 @@ namespace LiveGraph.Common
 {
 	public class AppTest
 	{
+		public int Id { get; set; }
+
+		public string Decription { get; set; }
+
 		public List<QuestionChoice> QuestionsChoice { get; set; }
 
 		public List<QuestionGraph> QuestionsGraph { get; set; }
