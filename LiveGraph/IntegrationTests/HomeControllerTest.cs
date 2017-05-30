@@ -13,11 +13,11 @@ using Microsoft.ApplicationInsights.AspNetCore;
 
 namespace IntegrationTests
 {
-	public class UnitTest1
+	public class HomeControllerTest
 	{
 		private readonly IWebHostBuilder _builder;
 
-		public UnitTest1()
+		public HomeControllerTest()
 		{
 			var path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\..\..\..\LiveGraph.UI"));
 			_builder = new WebHostBuilder()
@@ -59,13 +59,28 @@ namespace IntegrationTests
 		}
 
 		[Fact]
-		public async Task Test1()
+		public async Task Home()
 		{
 			using (var server = new TestServer(_builder))
 			{
 				var client = server.CreateClient();
 				var result = await client.GetAsync("/");
+
+				Assert.NotNull(result);
 			}
 		}
+		[Fact]
+		public async Task SetLanguage()
+		{
+			using (var server = new TestServer(_builder))
+			{
+				var client = server.CreateClient();
+				var result = await client.GetAsync("/SetLanguage?12?12");
+
+				Assert.NotNull(result);
+			}
+		}
+
+
 	}
 }
