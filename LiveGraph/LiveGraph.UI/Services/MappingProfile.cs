@@ -18,6 +18,8 @@ namespace LiveGraph.UI.Services
 			CreateMap<IEnumerable<PageDto>, IEnumerable<CreatePage>>();
 			CreateMap<PageDto, Page>();
 			CreateMap<Page, PageDto>();
+			CreateMap<ViewAppTest, AppTest>();
+			CreateMap<AppTest, ViewAppTest>();
 		}
 	}
 }

@@ -1,6 +1,6 @@
 ﻿@model LiveGraph.Common.AppTest
 @{
-    ViewData["Title"] = "Ñîçäàíèå Òåñòà";
+    ViewData["Title"] ="Создание тестов";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -9,26 +9,32 @@
     <link href="~/css/VisualizationGraph.css" rel="stylesheet" />
 }
 <div class="container">
-    <div class="form-group" id="questions">
+
+    <div class="container">
+        <div class="form-group" id="questions">
+        </div>
+        <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                Добавить вопрос
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a data-toggle="modal" data-target="#addQuestionChoiceModal">Добавить вопрос с выбором ответ</a></li>
+                <li><a data-toggle="modal" data-target="#QuestionsGraph">Добавить вопрос с алгоритмом</a></li>
+            </ul>
+        </div>
+
+        <label class="control-label">Название теста</label>
+        <input class="form-control " id="NameQuestion"/>
+        <button id="addTest" type="button" class="btn btn-default" data-dismiss="modal">Добавить вопрос</button>
     </div>
-    <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-            Добавить вопрос
-            <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-            <li><a data-toggle="modal" data-target="#addQuestionChoiceModal">Добавить вопрос с выбором ответ</a></li>
-            <li><a data-toggle="modal" data-target="#QuestionsGraph">Добавить вопрос с алгоритмом</a></li>
-            <li><a href="#">JavaScript</a></li>
-        </ul>
-    </div>
-    <button id="addTest" type="button" class="btn btn-default" data-dismiss="modal">Добавить ответ</button>
+   
 
     @await Html.PartialAsync("QuestionChoice")
     @await Html.PartialAsync("QuestionsGraph")
 </div>
 @section Scripts {
-<script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
 
 
     <script>
@@ -115,6 +121,8 @@ let dicNodes = [],
         }
 
         function AddTest() {
+            var nameQuestion = $('#NameQuestion').val();
+            appTest.decription = nameQuestion;
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("Create", "AppTests")',
@@ -226,7 +234,7 @@ let dicNodes = [],
 
                     .style('marker-start', function (d) { return d.left ? 'url(#start-arrow)' : ''; })
                     .style('marker-end', function (d) { return d.right ? 'url(#end-arrow)' : ''; })
-                    
+
 
                 // remove old links
                 path.exit().remove();
@@ -248,7 +256,7 @@ let dicNodes = [],
                     .style('fill', function (d) { return  d.color; })
                     .style('stroke', function (d) { return d3.rgb(colorSmoke).darker().toString(); })
                     .classed('reflexive', function (d) { return d.reflexive; })
-                   
+
 
                 g.append('svg:text')
                     .attr('x', 0)
@@ -275,7 +283,7 @@ let dicNodes = [],
 
             restart();
         }
-        
+
         function AddQuestionsGraph() {
             var algorithm = [];
             algorithm[0] = 'Обойдите граф обходом в ширину';
@@ -292,13 +300,13 @@ let dicNodes = [],
             return true;
         }
 
-       
+
         $('#addAnswer').click(addAnswer);
         $('#AddAnswerChoice').click(addQuestionChoice);
         $('#addTest').click(AddTest);
         $('#addQuestionsGraph').click(AddQuestionsGraph);
 
     </script>
-<script src="~/js/addAnswerGraph.js"></script>
+    <script src="~/js/addAnswerGraph.js"></script>
 
 }

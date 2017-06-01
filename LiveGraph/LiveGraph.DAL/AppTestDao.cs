@@ -62,24 +62,8 @@ namespace LiveGraph.DAL
 				{
 					var result = new AppTest();
 
-					var questionsChoice = reader["QuestionsChoice"] as string;
-					var questionsGraph = reader["QuestionsGraph"] as string;
-					var questionsNoAnswer = reader["QuestionsNoAnswer"] as string;
-
-					if (questionsChoice != null)
-					{
-						result.QuestionsChoice = serializer.Deserialize<List<QuestionChoice>>(questionsChoice);
-					}
-
-					if (questionsGraph != null)
-					{
-						result.QuestionsGraph = serializer.Deserialize<List<QuestionGraph>>(questionsGraph);
-					}
-
-					if (questionsNoAnswer != null && questionsNoAnswer != "")
-					{
-						result.QuestionsNoAnswer = serializer.Deserialize<List<QuestionNoAnswer>>(questionsNoAnswer);
-					}
+					result.Decription = reader["Decription"] as string;
+					result.Id = (int)reader["Id"];
 
 					yield return result;
 				};

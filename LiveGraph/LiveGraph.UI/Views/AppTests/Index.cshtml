@@ -1,0 +1,21 @@
+@model IEnumerable<ViewAppTest>
+@{
+    ViewData["Title"] = "Список тестов";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2>Список тестов</h2>
+<div class="text-center">
+    <div class="list-group">
+        @foreach (var item in Model)
+        {
+
+            <a href="@Url.Action("GetById","AppTest", new { Id = item.Id })" class="list-group-item">
+                <h4 class="list-group-item-heading">@item.Decription</h4>
+                <span>Пройти тест</span>
+            </a>
+        }
+
+    </div>
+</div>

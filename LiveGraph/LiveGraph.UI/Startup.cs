@@ -111,13 +111,6 @@ namespace LiveGraph.UI
 				app.UseExceptionHandler("/Home/Error");
 			}
 
-
-			//app.UseIdentity();
-
-
-			// Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
-
-
 			app.UseStaticFiles();
 
 			app.UseCookieAuthentication(new CookieAuthenticationOptions()

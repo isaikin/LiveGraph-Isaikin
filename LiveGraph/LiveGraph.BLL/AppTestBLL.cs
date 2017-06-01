@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using LiveGraph.Common;
+using System.Linq;
 
 namespace LiveGraph.BLL
 {
@@ -23,7 +24,7 @@ namespace LiveGraph.BLL
 
 		public IEnumerable<AppTest> GetAll()
 		{
-			return _dao.GetAll();
+			return _dao.GetAll().ToList();
 		}
 	}
 }
