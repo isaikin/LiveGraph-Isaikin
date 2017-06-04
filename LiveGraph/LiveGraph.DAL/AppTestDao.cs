@@ -70,6 +70,103 @@ namespace LiveGraph.DAL
 			}
 		}
 
+		public AppTest GetById(int id)
+		{
+			AppTest result = null;
+			using (var connection = base.GetConnection())
+			{
+				var cmd = new CommandDefinition("GetById",new { Id = id }, commandType: System.Data.CommandType.StoredProcedure);
+
+				var reader = connection.ExecuteReader(cmd);
+				ExtendedXmlSerializer serializer = new ExtendedXmlSerializer();
+
+				if (reader.Read())
+				{
+					result = new AppTest();
+
+					result.Decription = reader["Decription"] as string;
+					result.Id = (int)reader["Id"];
+					if (!reader.IsDBNull(reader.GetOrdinal("QuestionsChoice")) && (string)reader["QuestionsChoice"] != "")
+					{
+						var temp = (string)reader["QuestionsChoice"];
+						result.QuestionsChoice = serializer.Deserialize<List<QuestionChoice>>(temp);
+					}
+					if (!reader.IsDBNull(reader.GetOrdinal("QuestionsGraph")) && (string)reader["QuestionsGraph"] != "")
+					{
+						var temp = (string)reader["QuestionsGraph"];
+						result.QuestionsGraph = serializer.Deserialize<List<QuestionGraph>>(temp);
+					}
+					if (!reader.IsDBNull(reader.GetOrdinal("QuestionsNoAnswer")) && (string)reader["QuestionsNoAnswer"] != "")
+					{
+						var temp = (string)reader["QuestionsNoAnswer"];
+						result.QuestionsNoAnswer = serializer.Deserialize<List<QuestionNoAnswer>>(temp);
+					}
+				};
+			}
+
+			return result;
+		}
+
+		public void AddMarkUser(int mark, string nameUser, int idTest)
+		{
+			using (var connection = base.GetConnection())
+			{
+				ExtendedXmlSerializer serializer = new ExtendedXmlSerializer();
+
+				connection.Open();
+				connection.Execute("AddMarkUser",
+					new
+					{
+						IdTest = idTest,
+						NameUser = nameUser,
+						Mark = mark
+					},
+					commandType: System.Data.CommandType.StoredProcedure);
+			};
+		}
+
+		public MarkTests GetMarkByName(string nameUser)
+		{
+			MarkTests result = new MarkTests();
+			using (var connection = base.GetConnection())
+			{
+				var cmd = new CommandDefinition("GetTestMarkByMark", new { NameUser = nameUser } , commandType: System.Data.CommandType.StoredProcedure);
+				var reader = connection.ExecuteReader(cmd);
+
+
+				while (reader.Read())
+				{
+					var temp = new ResultTest();
+					temp.Name = (string)reader["Decription"];
+					temp.Mark = (int)reader["Mark"];
+					result.Tests.Add(temp);
+				}
+			};
+
+			return result;
+		}
+
+		public MarkTests GetMarks()
+		{
+			MarkTests result = new MarkTests();
+			using (var connection = base.GetConnection())
+			{
+				var cmd = new CommandDefinition("GetMarkTests", commandType: System.Data.CommandType.StoredProcedure);
+				var reader = connection.ExecuteReader(cmd);
+
+
+				while (reader.Read())
+				{
+					var temp = new ResultTest();
+					temp.Name = (string)reader["Decription"];
+					temp.Mark = (int)reader["Mark"];
+					temp.LoginUser = (string)reader["Loggin"];
+					result.Tests.Add(temp);
+				}
+			};
+
+			return result;
+		}
 		private string GetXmlForQuestionChoice(List<QuestionChoice> collection)
 		{
 			XmlDocument doc = new XmlDocument();

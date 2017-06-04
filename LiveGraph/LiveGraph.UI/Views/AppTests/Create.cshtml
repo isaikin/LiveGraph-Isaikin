@@ -22,6 +22,7 @@
                 <li><a data-toggle="modal" data-target="#addQuestionChoiceModal">Добавить вопрос с выбором ответ</a></li>
                 <li><a data-toggle="modal" data-target="#QuestionsGraph">Добавить вопрос с алгоритмом</a></li>
             </ul>
+           
         </div>
 
         <label class="control-label">Название теста</label>
@@ -38,6 +39,15 @@
 
 
     <script>
+        function StartVertex() {
+            var startVertex = $('#StartVertex');
+            var option = $('<option></option>');
+            for (var i = 0; i < nodesAdd.length; i++) {
+                option.val(nodesAdd[i].id);
+                option.text(nodesAdd[i].id);
+                startVertex.append(option);
+            }
+         }
         var nodesAdd = [
             { id: 0, reflexive: false, color: "#a1fa01", text: 0 },
             { id: 1, reflexive: true, color: "#a1fa01", text: 1 },
@@ -48,6 +58,7 @@
                 { source: nodesAdd[0], target: nodesAdd[1], left: false, right: true },
                 { source: nodesAdd[1], target: nodesAdd[2], left: false, right: true }
             ];
+      
 let dicNodes = [],
     dicLinks = [];
         function getListGrapg() {
@@ -289,7 +300,13 @@ let dicNodes = [],
             algorithm[0] = 'Обойдите граф обходом в ширину';
             algorithm[1] = 'Обойдите граф обходом в глубину';
             var selectalgorithm = $('#selectedAlg').val();
-            appTest.questionsGraph.push({ algorithm: selectalgorithm, graph: getListGrapg(),})
+            if (!selected_node) { 
+                alert("Выберите стартовую вершину"); 
+                return false;
+            }
+
+            appTest.questionsGraph.push({ algorithm: selectalgorithm, graph: getListGrapg(), startVertex: selected_node.id })
+            selected_node = null;
             dicNodes.push(nodesAdd);
             dicLinks.push(linksAdd);
             let h = $('<h2></h2>').append(algorithm[selectalgorithm]);
@@ -305,7 +322,6 @@ let dicNodes = [],
         $('#AddAnswerChoice').click(addQuestionChoice);
         $('#addTest').click(AddTest);
         $('#addQuestionsGraph').click(AddQuestionsGraph);
-
     </script>
     <script src="~/js/addAnswerGraph.js"></script>
 

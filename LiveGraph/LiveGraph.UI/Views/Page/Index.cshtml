@@ -7,7 +7,7 @@
 {
     @using (Html.BeginForm("Index", "Page", FormMethod.Post ,new { @class = "form-horizontal" }))
     { <div class="form-group">
-            <label asp-for="Name" class="col-md-2 control-label"></label>
+            <label asp-for="Name" class="col-md-2 control-label">Название </label>
             <div class="col-md-10">
                 <input asp-for="Name" class="form-control" value="@Model.Name" />
                 <span asp-validation-for="Name" class="text-danger"></span>
@@ -17,7 +17,7 @@
                 @Model?.Text
     </textarea>
         <div class="form-group">
-            <label asp-for="Description" class="col-md-2 control-label"></label>
+            <label asp-for="Description" class="col-md-2 control-label">Описание</label>
             <div class="col-md-10">
                 <textarea name="Description" class="form-control" rows="10" cols="80">@Model.Description</textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>

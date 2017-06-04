@@ -1,0 +1,30 @@
+﻿@model MarkTests
+@{
+    ViewData["Title"] = "Оценки пользователей";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <h2>Оценки пользователей</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Логин пользователя</th>
+                <th>Название теста</th>
+                <th>Оценка</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Tests)
+            {
+                <tr>
+                    <td>@item.LoginUser</td>
+                    <td>@item.Name</td>
+                    <td>@item.Mark</td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+
+

@@ -16,7 +16,7 @@
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
         <link href="~/css/theme.min.css" rel="stylesheet" />
-    
+
     </environment>
     @RenderSection("Css", required: false)
 </head>
@@ -34,16 +34,27 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="VisualizationGraph" asp-action="Index">Визуализация</a></li>
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li><a asp-area="" asp-controller="AppTests" asp-action="Index">Список тестов</a></li>
-                    }
+                        <li class="dropdown">
+                                <a class="dropdown-toggle" type="button" data-toggle="dropdown">
+                                    Оценки
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a asp-controller="AppTests" asp-action="Marks">Мои Результаты</a></li>
+
+                                    @if (User.HasClaim("Admin", "4"))
+                                    {
+                                        <li><a asp-controller="AppTests" asp-action="AllMarks">Результаты пользователей</a></li>
+                                    }
+                                </ul>
+                        </li>}
                     @if (User.HasClaim("Admin", "4"))
                     {
-                        <li><a asp-area="" asp-controller="AppTests" asp-action="Create">Создание теста</a></li>
-                    }
+                        <li><a asp-area="" asp-controller="AppTests" asp-action="Create">Создание теста</a></li>}
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>

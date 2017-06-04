@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace LiveGraph.UI.Controllers
 {
-	[Authorize(Policy = "Admin")]
+	
 	public class PageController : Controller
 	{
 		private readonly IMapper _mapper;
@@ -23,8 +23,9 @@ namespace LiveGraph.UI.Controllers
 			_pageBLL = pageBLL;
 		}
 
+		[AllowAnonymous]
 		[HttpGet]
-				[AllowAnonymous]
+	
 		public IActionResult Index(int id)
 		{
 			var page = _mapper.Map<Page>(_pageBLL.GetById(id));
@@ -56,6 +57,7 @@ namespace LiveGraph.UI.Controllers
 		}
 
 		[AllowAnonymous]
+		[HttpGet]
 		public IActionResult GetAll()
 		{
 			var result = _pageBLL.GetAll();

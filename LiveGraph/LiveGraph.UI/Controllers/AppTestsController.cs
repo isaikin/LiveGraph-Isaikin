@@ -40,8 +40,6 @@ namespace LiveGraph.UI.Controllers
 				{
 					Redirect = Url.Action("Index", "Home")
 				});
-
-
 		}
 		[HttpGet]
 		public IActionResult GetAll()
@@ -55,6 +53,38 @@ namespace LiveGraph.UI.Controllers
 		{
 			var result = _mapper.Map<IEnumerable<ViewAppTest>>(_appTestBLL.GetAll()).ToList();
 			return View();
+		}
+
+		[HttpGet]
+		public IActionResult Passage(int id)
+		{
+			var test = _appTestBLL.GetById(id);
+
+			return View(test);
+		}
+
+		[HttpGet]
+		public IActionResult Marks()
+		{
+			var testMark = _appTestBLL.GetMarkByName(User.Identity.Name);
+
+			return View(testMark);
+		}
+
+		public IActionResult AllMarks()
+		{
+			var testMark = _appTestBLL.GetMarks();
+
+			return View(testMark);
+		}
+
+		[HttpPost]
+		public IActionResult Passage(PassageAppTest test)
+		{
+
+			_appTestBLL.Passage(test, User.Identity.Name);
+
+			return null;
 		}
 	}
 }

@@ -1,4 +1,9 @@
 ﻿lastNodeId = 2;
+var selected_node = null,
+    selected_link = null,
+    mousedown_link = null,
+    mousedown_node = null,
+    mouseup_node = null;
 (function () {
     var width = 560,
         height = 500,
@@ -58,11 +63,7 @@
         circle = svg.append('svg:g').selectAll('g');
 
     // mouse event vars
-    var selected_node = null,
-        selected_link = null,
-        mousedown_link = null,
-        mousedown_node = null,
-        mouseup_node = null;
+    
 
     function resetMouseVars() {
         mousedown_node = null;
@@ -243,7 +244,7 @@
         node.color = "#a1fa01";
         node.text = ++lastText;
         nodesAdd.push(node);
-
+        StartVertex();
         restart();
     }
 

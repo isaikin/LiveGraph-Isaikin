@@ -1,15 +1,14 @@
-@model LiveGraph.UI.Models.CreatePage
+﻿@model LiveGraph.UI.Models.CreatePage
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Создание страницы";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create</h2>
+<h2>Создание страницы</h2>
 
 <form asp-action="Create">
     <div class="form-horizontal">
-        <h4>CreatePage</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">

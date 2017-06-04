@@ -72,17 +72,6 @@ namespace LiveGraph.UI
 
 			services.AddClaims(Configuration);
 
-			//	.AddAuthorization(options =>
-			//{
-			//	var claims = Configuration.GetSection("Claims").GetChildren(); 
-
-			//	//foreach (var item in claims)
-			//	//{
-			//	//	options.AddPolicy()
-			//	//}
-			//	options.AddPolicy("VipPolicy", policy => policy.RequireClaim("isVip"));
-			//});
-
 			services.AddAutoMapper(typeof(Startup));
 
 			services.AddTransient<IAppUserDao, AppUserDao>();

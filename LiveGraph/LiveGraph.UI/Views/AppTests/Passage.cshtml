@@ -1,0 +1,50 @@
+﻿@model AppTest
+@{
+    ViewData["Title"] = "Прохождение теста";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Прохождение теста</h2>
+
+<div class="container">
+    @foreach (var item in Model.QuestionsChoice)
+    {
+        <div class="question">
+            <input class="IdQuestion"type="hidden" value="@item.Id">
+            <h2>123</h2>
+            @foreach (var answer in @item.Answers)
+            {
+                <div class="checkbox">
+                    <lable>
+                        <input type="checkbox" value="@answer.Id" name="QuestionsChoice ">@answer.Answer
+                    </lable>
+                </div>
+            }
+        </div>
+    }
+    <button id ="CheckTest" class="badge btn-default">Проверить</button>
+</div>
+@section Scripts {
+<script>
+    var appTest = { questionsChoice :[], id :@Model.Id }
+    function checkTest() {
+        var questions = $('.question');
+        for (var i = 0; i < questions.length; i++) {
+            var idQuestion = $('.IdQuestion', questions[i]).val();
+            var idAnswer = $('input:checkbox:checked', questions[i]).val();
+            appTest.questionsChoice.push({ idQuestion: idQuestion, idAnswer: idAnswer });
+        }
+
+     $.ajax({
+                type: "POST",
+                url: '@Url.Action("Passage", "AppTests")',
+                data: appTest,
+                success: function (data, textStatus) {
+                    window.location.href = data.redirect;
+                    }
+            });
+    }
+
+    $('#CheckTest').click(checkTest);
+</script>
+    }

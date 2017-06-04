@@ -10,5 +10,13 @@ namespace LiveGraph.InterfaceBLL
 		int Add(AppTest test);
 
 		IEnumerable<AppTest> GetAll();
+
+		AppTest GetById(int id);
+
+		void Passage(PassageAppTest passageTest, string name);
+
+		MarkTests GetMarkByName(string nameUser);
+
+		MarkTests GetMarks();
 	}
 }

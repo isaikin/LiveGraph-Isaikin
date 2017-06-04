@@ -126,4 +126,7 @@
   <data name="Login" xml:space="preserve">
     <value>Вход</value>
   </data>
+  <data name="RememberMe" xml:space="preserve">
+    <value>Запомнить меня?</value>
+  </data>
 </root>

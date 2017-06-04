@@ -14,5 +14,7 @@ namespace LiveGraph.Common.Questions
 		[XmlAttribute]
 		public Algorithms Algorithm { get; set; }
 
+		[XmlAttribute]
+		public int StartVertex { get; set; }
 	}
 }

@@ -8,7 +8,7 @@ namespace LiveGraph.Common.Questions
     {
 		public TypeQuestions Type { get; set; }
 
-		public int Id { get; set; }
+		public Guid Id { get; set; }
 
 		public double Mark { get; set; }
 	}

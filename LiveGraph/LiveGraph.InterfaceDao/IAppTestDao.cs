@@ -10,5 +10,13 @@ namespace LiveGraph.InterfaceDao
 		int Add(AppTest test);
 
 		IEnumerable<AppTest> GetAll();
+
+		AppTest GetById(int id);
+
+		void AddMarkUser(int mark, string nameUser, int idTest);
+
+		MarkTests GetMarkByName(string nameUser);
+
+		MarkTests GetMarks();
 	}
 }

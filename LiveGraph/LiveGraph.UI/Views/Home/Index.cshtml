@@ -20,8 +20,8 @@
 </div>
 
 <div class="text-right">
-@if (User.IsInRole("Admin"))
-{ 
+@if (User.HasClaim("Admin", "4"))
+{
     <a type="button" href="@Url.Action("Create", "Page")" class="btn btn-sm btn-info">Добавить</a>
 }
 </div>
