@@ -1,0 +1,304 @@
+﻿@model LiveGraph.Common.AppTest
+@{
+    ViewData["Title"] = "Ñîçäàíèå Òåñòà";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Css {
+
+    <link href="~/css/VisualizationGraph.css" rel="stylesheet" />
+}
+<div class="container">
+    <div class="form-group" id="questions">
+    </div>
+    <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+            Добавить вопрос
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><a data-toggle="modal" data-target="#addQuestionChoiceModal">Добавить вопрос с выбором ответ</a></li>
+            <li><a data-toggle="modal" data-target="#QuestionsGraph">Добавить вопрос с алгоритмом</a></li>
+            <li><a href="#">JavaScript</a></li>
+        </ul>
+    </div>
+    <button id="addTest" type="button" class="btn btn-default" data-dismiss="modal">Добавить ответ</button>
+
+    @await Html.PartialAsync("QuestionChoice")
+    @await Html.PartialAsync("QuestionsGraph")
+</div>
+@section Scripts {
+<script src="http://d3js.org/d3.v3.min.js"></script>
+
+
+    <script>
+        var nodesAdd = [
+            { id: 0, reflexive: false, color: "#a1fa01", text: 0 },
+            { id: 1, reflexive: true, color: "#a1fa01", text: 1 },
+            { id: 2, reflexive: false, color: "#a1fa01", text: 2 }
+        ],
+            //lastNodeId = 2,
+            linksAdd = [
+                { source: nodesAdd[0], target: nodesAdd[1], left: false, right: true },
+                { source: nodesAdd[1], target: nodesAdd[2], left: false, right: true }
+            ];
+let dicNodes = [],
+    dicLinks = [];
+        function getListGrapg() {
+            var graph = [];
+            for (let i = 0; i < nodesAdd.length; i++) {
+                graph[nodesAdd[i].id] = [];
+            }
+
+            for (let i = 0; i < linksAdd.length; i++) {
+                let first = linksAdd[i].source.id;
+                let second = linksAdd[i].target.id;
+
+                if (linksAdd[i].left) {
+                    graph[second].push(first);
+                }
+
+                if (linksAdd[i].right) {
+                    graph[first].push(second);
+
+                }
+
+            }
+
+            for (let i = 0; i < graph.length; i++) {
+                if (typeof graph[i] != "undefined") {
+                    graph[i].sort();
+                }
+            }
+
+            return graph;
+        }
+
+        let tempQuestions = $('#questions');
+        var appTest = {
+            questionsChoice :[],
+            questionsGraph :[],
+            questionsNoAnswer : []
+        }
+        function addAnswer(e) {
+            $('<div class="checkbox"> <lable class="answers" > <input type="checkbox" class="check"><input class="answer" type="text" /> </lable></div >').appendTo($("#answers"));
+            e.preventDefault();
+            return false;
+        }
+
+        function addQuestionChoice(e) {
+            var answers = $('.answers');
+            var answerList = [];
+            for (var i = 0; i < answers.length; i++) {
+                let answer = $(answers[i]).find('.answer').val(),
+                    check = $(answers[i]).find('.check').is(":checked");
+                answerList.push({ answer: answer, CorrectAnswer: check })
+            }
+            let questiontemp = $('#question').val();
+
+            let element = $('<div></div>'),
+                header = $('<h2></h2>').prepend(questiontemp),
+                tempelemt = $('<div class="checkbox" ></div>'),
+                tempInput = $('<input type="checkbox"/>').prop('disabled', true),
+                lable = $('<lable></lable>');
+
+            element.append(header);
+            for (var i = 0; i < answerList.length; i++) {
+                let temp = tempelemt.clone(),
+                    input = tempInput.clone().prop("checked", answerList[i].CorrectAnswer);
+                temp.append(lable.clone().append(input).append(answerList[i].answer));
+                element.append(temp);
+            }
+            element.appendTo(tempQuestions);
+            appTest.questionsChoice.push({ question: questiontemp, answers: answerList });
+            return true;
+        }
+
+        function AddTest() {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Create", "AppTests")',
+                data: appTest,
+                success: function (data, textStatus) {
+                    window.location.href = data.redirect;
+                    }
+            });
+            return true;
+        }
+
+        function init(nodes, links, idGraph) {
+            var width = 560,
+                height = 500,
+                colors = "#360cea",
+                colorSmoke = "#fff",
+                lastText = 2;
+
+            var svg = d3.select('#' + idGraph)
+                .append('svg')
+                .attr('oncontextmenu', 'return false;')
+                .attr('width', width)
+                .attr('height', height);
+
+            // set up initial nodes and links
+            //  - nodes are known by 'id', not by index in array.
+            //  - reflexive edges are indicated on the node (as a bold black circle).
+            //  - links are always source < target; edge directions are set by 'left' and 'right'.
+
+
+            // init D3 force layout
+            var force = d3.layout.force()
+                .nodes(nodes)
+                .links(links)
+                .size([width, height])
+                .linkDistance(150)
+                .charge(-500)
+                .on('tick', tick)
+
+            // define arrow markers for graph links
+            svg.append('svg:defs').append('svg:marker')
+                .attr('id', 'end-arrow')
+                .attr('viewBox', '0 -5 10 10')
+                .attr('refX', 6)
+                .attr('markerWidth', 3)
+                .attr('markerHeight', 3)
+                .attr('orient', 'auto')
+                .append('svg:path')
+                .attr('d', 'M0,-5L10,0L0,5')
+                .attr('fill', '#000');
+
+            svg.append('svg:defs').append('svg:marker')
+                .attr('id', 'start-arrow')
+                .attr('viewBox', '0 -5 10 10')
+                .attr('refX', 4)
+                .attr('markerWidth', 3)
+                .attr('markerHeight', 3)
+                .attr('orient', 'auto')
+                .append('svg:path')
+                .attr('d', 'M10,-5L0,0L10,5')
+                .attr('fill', '#000');
+
+            // line displayed when dragging new nodes
+            var drag_line = svg.append('svg:path')
+                .attr('class', 'link dragline hidden')
+                .attr('d', 'M0,0L0,0');
+
+            // handles to link and node element groups
+            var path = svg.append('svg:g').selectAll('path'),
+                circle = svg.append('svg:g').selectAll('g');
+            // update force layout (called automatically each iteration)
+            function tick() {
+                // draw directed edges with proper padding from node centers
+                path.attr('d', function (d) {
+                    var deltaX = d.target.x - d.source.x,
+                        deltaY = d.target.y - d.source.y,
+                        dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY),
+                        normX = deltaX / dist,
+                        normY = deltaY / dist,
+                        sourcePadding = d.left ? 17 : 12,
+                        targetPadding = d.right ? 17 : 12,
+                        sourceX = d.source.x + (sourcePadding * normX),
+                        sourceY = d.source.y + (sourcePadding * normY),
+                        targetX = d.target.x - (targetPadding * normX),
+                        targetY = d.target.y - (targetPadding * normY);
+                    return 'M' + sourceX + ',' + sourceY + 'L' + targetX + ',' + targetY;
+                });
+
+                circle.attr('transform', function (d) {
+                    return 'translate(' + d.x + ',' + d.y + ')';
+                });
+            }
+
+
+
+            // update graph (called when needed)
+            function restart() {
+                // path (link) group
+                path = path.data(links);
+                // update existing links
+                path
+                    .style('marker-start', function (d) { return d.left ? 'url(#start-arrow)' : ''; })
+                    .style('marker-end', function (d) { return d.right ? 'url(#end-arrow)' : ''; });
+
+
+                // add new links
+                path.enter().append('svg:path')
+                    .attr('class', 'link')
+
+                    .style('marker-start', function (d) { return d.left ? 'url(#start-arrow)' : ''; })
+                    .style('marker-end', function (d) { return d.right ? 'url(#end-arrow)' : ''; })
+                    
+
+                // remove old links
+                path.exit().remove();
+                // circle (node) group
+                // NB: the function arg is crucial here! nodes are known by id, not by index!
+                circle = circle.data(nodes, function (d) { return d.id; })
+
+                // update existing nodes (reflexive & selected visual states)
+                circle.selectAll('circle')
+                    .style('fill', function (d) { return d.color; })
+                    .classed('reflexive', function (d) { return d.reflexive; })
+
+                // add new nodes
+                var g = circle.enter().append('svg:g');
+
+                g.append('svg:circle')
+                    .attr('class', 'node')
+                    .attr('r', 12)
+                    .style('fill', function (d) { return  d.color; })
+                    .style('stroke', function (d) { return d3.rgb(colorSmoke).darker().toString(); })
+                    .classed('reflexive', function (d) { return d.reflexive; })
+                   
+
+                g.append('svg:text')
+                    .attr('x', 0)
+                    .attr('y', 4)
+                    .attr('class', 'id')
+                    .text(function (d) { ; return d.text; });
+
+                // remove old nodes
+                circle.exit().remove();
+                // set the graph in motion
+                force.start();
+            }
+
+
+            function spliceLinksForNode(node) {
+                var toSplice = links.filter(function (l) {
+                    return (l.source === node || l.target === node);
+                });
+                toSplice.map(function (l) {
+                    links.splice(links.indexOf(l), 1);
+                });
+            }
+
+
+            restart();
+        }
+        
+        function AddQuestionsGraph() {
+            var algorithm = [];
+            algorithm[0] = 'Обойдите граф обходом в ширину';
+            algorithm[1] = 'Обойдите граф обходом в глубину';
+            var selectalgorithm = $('#selectedAlg').val();
+            appTest.questionsGraph.push({ algorithm: selectalgorithm, graph: getListGrapg(),})
+            dicNodes.push(nodesAdd);
+            dicLinks.push(linksAdd);
+            let h = $('<h2></h2>').append(algorithm[selectalgorithm]);
+            let temp = $('<div></div>').attr('id', 'a' + dicNodes.length);
+            temp.append(h);
+            temp.appendTo(tempQuestions);
+            init(dicNodes[dicNodes.length - 1], dicLinks[dicNodes.length - 1], 'a'+dicNodes.length)
+            return true;
+        }
+
+       
+        $('#addAnswer').click(addAnswer);
+        $('#AddAnswerChoice').click(addQuestionChoice);
+        $('#addTest').click(AddTest);
+        $('#addQuestionsGraph').click(AddQuestionsGraph);
+
+    </script>
+<script src="~/js/addAnswerGraph.js"></script>
+
+}

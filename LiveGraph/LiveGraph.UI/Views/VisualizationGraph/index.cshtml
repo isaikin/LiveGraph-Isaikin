@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewData["Title"] = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@section Css {
+
+    <link href="~/css/VisualizationGraph.css" rel="stylesheet" />
+}
+<div class="container-fluid">
+    <div id="graph" class="table-bordered ">
+    </div>
+    <div class="btn-group">
+        <button id="Start" class=" btn btn-info">Старт</button>
+        <button id="Stop" class=" btn btn-info">Стоп</button>
+        <button id="resetColor" class=" btn btn-info">Сбросить цвет</button>
+        <button id="deleteCircle" class=" btn btn-info">Удалить все вершины</button>
+        @await Html.PartialAsync("_HelpViz")
+        <div class="form-group">
+            <label for="sel1">Ответ алгоритма</label>
+            <span class="form-control" id="answer" value="asd"></span>
+            <label for="sel1">Выбор алгоритма</label>
+            <select class="form-control" id="selectedAlg">
+                <option value="1">Поиск в ширину</option>
+                <option value="2">Поисук в глубину</option>
+            </select>
+        </div>
+        
+       
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">Список смежности</div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Номер вершины</th>
+                    <th>Смежность с вершинами</th>
+                </tr>
+            </thead>
+            <tbody id="addCircleTable"></tbody>
+        </table>
+    </div>
+</div>
+@section Scripts {
+
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="~/js/VisualizationGraph.js"></script>
+    <script>
+        $('#Start').click(start);
+        $('#Stop').click(stopViz);
+        $('#resetColor').click(resetColorCircle);
+        $('#deleteCircle').click(deleteCircle);
+    </script>
+}
